@@ -1,9 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect} from "react"
 import Image from "next/image"
-import { Category, FoodProp } from "@/utils/type"
+import { Category } from "@/utils/type"
 import { motion } from "framer-motion"
 import { useFoodContext } from "@/utils/context"
 

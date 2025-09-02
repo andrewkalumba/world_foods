@@ -2,7 +2,7 @@ import Image from "next/image"
 const Logo = () => {
     return (
         <div>
-            <Image src="/logo1.jpg" alt="logo" width={80} height={80} className="w-[100%]"/>
+            <Image src="/logo1.jpg" alt="logo" width={80} height={80} className="w-[95%]"/>
         </div>
     )
 }

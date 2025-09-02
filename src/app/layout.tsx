@@ -6,6 +6,8 @@ import Header from "@/components/Header";
 import { Toaster } from "react-hot-toast";
 import Footer from "@/components/Footer";
 import { SavedMealProvider } from "@/utils/context";
+import { UserProvider } from "@/utils/context";
+import Protection from "@/components/LoginWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,14 +33,20 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <FoodContextProvider>
-          <SavedMealProvider>
-            <Header />
-            {children}
-            <Footer />
-            <Toaster />
-          </SavedMealProvider>
-        </FoodContextProvider>
+        <UserProvider>
+
+          <FoodContextProvider>
+            <SavedMealProvider>
+              <Header />
+              <Protection>
+                {children}
+              </Protection>
+              <Footer />
+              <Toaster />
+            </SavedMealProvider>
+          </FoodContextProvider>
+
+        </UserProvider>
 
       </body>
     </html>

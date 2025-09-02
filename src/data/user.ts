@@ -1,0 +1,9 @@
+import { userType } from "@/utils/type";
+
+export const userArray: userType[] = [
+    { name: "Andrew", password: "123456" },
+    { name: "Julius", password: "654321" },
+    { name: "Kalumba", password: "123456" },
+    { name: "Rob", password: "123456" },
+    { name: "Tobbe", password: "654321" }
+]

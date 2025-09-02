@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react"
+
 export type Category = {
     strCategoryDescription: string
     strCategoryThumb: string
@@ -37,16 +39,32 @@ export interface CategoryContextType {
 export const NavItems = [
     { name: "Home", link: "/" },
     { name: "Food Categories", link: "/foodcategory" },
-    { name: "Favorites", link: "/favorite"}
+    { name: "Favorites", link: "/favorite" }
 ]
 
 export interface savedMeal {
-savedMeal: meal[]
-addMeal: (item: meal) => void
-removeMeal: (id: string) => void
+    savedMeal: meal[]
+    addMeal: (item: meal) => void
+    removeMeal: (id: string) => void
 }
 
 export type FavoriteContextType = {
     favoriteCategory: string | null
     setFavoriteCategory: (category: string) => void
+}
+
+export type userType = {
+    name: string
+    password: string
+}
+
+export type userContextType = {
+    user: userType | null
+    setUser: Dispatch<SetStateAction<userType | null>>
+}
+
+export type Meal = {
+    idMeal: string
+    strMeal: string
+    strMealThumb: string
 }

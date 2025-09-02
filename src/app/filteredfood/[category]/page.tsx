@@ -45,7 +45,7 @@ const EachFoodCategory = ({ params }: { params: Promise<{ category: string }> })
   if (!category) return null
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-blue-150 to-blue-400 py-12 px-6">
+    <div className="min-h-screen bg-gradient-to-r from-black-400 via-blue-300 to-black-400 text-[#0B132B] py-12 px-6">
       <motion.h1
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -99,13 +99,13 @@ const EachFoodCategory = ({ params }: { params: Promise<{ category: string }> })
 
       <AnimatePresence>
         {foodInfo && (
-          <div className=" bg-[url('/image.jpg')]">
+          <div className="bg-gradient-to-r from-black-400 via-blue-300 to-black-400 text-[#0B132B]">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
-              onClick={() => setFoodInfo(null)}/>
+              onClick={() => setFoodInfo(null)} />
 
             <motion.div
               initial={{ scale: 0.8, opacity: 0, y: 50 }}
