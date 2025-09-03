@@ -30,13 +30,13 @@ export const SavedMealProvider = ({ children }: { children: React.ReactNode }) =
 
     const addMeal = (item: meal) => {
         setSavedMeal((prev) => {
-            if (prev.find((e) => e.idMeal === item.idMeal)) return prev
+            if (prev.find(food => food.idMeal === item.idMeal)) return prev
             return [...prev, item]
         })
     }
 
     const removeMeal = (id: string) => {
-        setSavedMeal((prev) => prev.filter((item) => item.idMeal !== id))
+        setSavedMeal((prev) => prev.filter(food => food.idMeal !== id))
     }
 
     return (

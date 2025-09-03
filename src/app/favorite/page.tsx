@@ -5,7 +5,6 @@ import { meal } from "@/utils/type"
 import { AnimatePresence, motion } from "framer-motion"
 import Image from "next/image"
 import { useState } from "react"
-import toast from "react-hot-toast"
 
 const ProfilePage = () => {
     const { savedMeal, removeMeal } = useSavedMeals()
@@ -40,7 +39,7 @@ const ProfilePage = () => {
                                 <button
                                     onClick={() => removeMeal(meal.idMeal)}
                                     className="absolute top-4 right-4 font-bold bg-red-600 hover:bg-red-600 transition px-4 py-2 rounded-lg  text-white shadow">
-                                    Close
+                                    Remove
                                 </button>
                             </div>
                         ))}

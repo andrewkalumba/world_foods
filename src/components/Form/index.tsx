@@ -31,7 +31,7 @@ const Form = () => {
     }
 
     return (
-        <div className="min-h-screen flex items-start pt-40 md:pt-0 md:items-center justify-center bg-[url(/image1.jpg)] bg-center bg-cover">
+        <div className="min-h-screen flex items-start pt-40 p-3 md:p-0 md:pt-0 md:items-center justify-center bg-[url(/image1.jpg)] bg-center bg-cover">
             <motion.form
                 initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
