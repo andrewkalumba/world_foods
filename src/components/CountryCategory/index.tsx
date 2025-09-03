@@ -4,37 +4,37 @@ import Form from "@/components/Form"
 import { useUser } from "@/utils/context"
 import { useState } from "react"
 import Image from "next/image"
-import { Meal } from "@/utils/type"
+import { MealData } from "@/utils/type"
 
 const CountryCategory = () => {
     const { user } = useUser()
     const [country, setCountry] = useState("")
-    const [meals, setMeals] = useState<Meal[]>([])
+    const [meals, setMeals] = useState<MealData[]>([])
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
 
     const fetchCountryMeals = async (searchCountry: string) => {
         try {
             setLoading(true)
-            const response = await fetch(
-                `https://www.themealdb.com/api/json/v1/1/filter.php?a=${searchCountry}`
-            )
+            const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${searchCountry}`)
             const data = await response.json()
             if (data.meals) {
                 setMeals(data.meals)
+                console.log(data)
             } else {
                 setMeals([])
                 setError("No meals found for this country.")
             }
-        } catch (err) {
-            console.error("Fetch error:", err)
+        } catch (error) {
+            console.error("Fetch error:", error)
             setError("Something went wrong.")
         } finally {
             setLoading(false)
         }
+
     }
 
-    const handleSearch = async (e: React.FormEvent) => {
+    const handleSearch = async (e: { preventDefault: () => void }) => {
         e.preventDefault()
         if (!country.trim()) return
         setError(null)
@@ -67,7 +67,7 @@ const CountryCategory = () => {
                                     type="text"
                                     value={country}
                                     onChange={(e) => setCountry(e.target.value)}
-                                    placeholder="Enter a country (e.g. Sweden, Uganda)"
+                                    placeholder="Enter a country (e.g. American, Chinese)"
                                     className="px-4 py-2 w-64 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none shadow-sm text-amber-950" />
                                 <button
                                     type="submit"

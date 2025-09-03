@@ -63,7 +63,7 @@ export type userContextType = {
     setUser: Dispatch<SetStateAction<userType | null>>
 }
 
-export type Meal = {
+export type MealData = {
     idMeal: string
     strMeal: string
     strMealThumb: string

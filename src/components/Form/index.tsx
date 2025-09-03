@@ -31,7 +31,7 @@ const Form = () => {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[url(/image1.jpg)] bg-center bg-cover">
+        <div className="min-h-screen flex items-start pt-40 md:pt-0 md:items-center justify-center bg-[url(/image1.jpg)] bg-center bg-cover">
             <motion.form
                 initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -54,7 +54,7 @@ const Form = () => {
                     )}
                 </AnimatePresence>
 
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col md:gap-6">
                     <div className="flex flex-col">
                         <label htmlFor="username" className="text-gray-900 font-medium mb-2">
                             Username
@@ -83,14 +83,15 @@ const Form = () => {
                             required
                         />
                     </div>
-
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={handleClick}
-                        className="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all text-lg">
-                        Login
-                    </motion.button>
+                    <div className="pt-6">
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={handleClick}
+                            className="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all text-lg">
+                            Login
+                        </motion.button>
+                    </div>
                 </div>
             </motion.form>
         </div>
