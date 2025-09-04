@@ -10,10 +10,6 @@ const ProfilePage = () => {
     const { savedMeal, removeMeal } = useSavedMeals()
     const [foodInfo, setFoodInfo] = useState<meal | null>(null)
 
-    function addMeal(foodInfo: meal) {
-        throw new Error("Function not implemented.")
-    }
-
     return (
         <div className="min-h-screen p-6 bg-gradient-to-r from-black-400 via-blue-300 to-black-400 text-[#0B132B] flex justify-center">
             <div className="w-[70%] max-w-6xl bg-white rounded-3xl shadow-xl p-8">

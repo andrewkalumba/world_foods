@@ -20,7 +20,7 @@ const Navigation = () => {
     }
     if (!user) return null
     return (
-        <nav className="backdrop-blur-md bg-[#040F0F]/90 text-white px-8 py-3 flex items-center justify-between shadow-lg sticky top-0 z-50 rounded-b-2xl border-b border-white/10">
+        <nav className="backdrop-blur-md bg-[#040F0F]/90 text-white px-8 py-3 flex items-center justify-between shadow-lg sticky top-0 z-50  border-b border-white/10">
             <div className="hidden md:flex gap-10 justify-between w-full" >
                 <div className=" flex gap-10 items-center text-lg font-medium">
                     {NavItems.map((item) => (
@@ -48,7 +48,7 @@ const Navigation = () => {
                 {isOpen ? <RiCloseLine /> : <RxHamburgerMenu />}
             </button>
             {isOpen && (
-                <div className="absolute top-16 left-0 w-full bg-[#040F0F]/95 text-white flex flex-col gap-4 px-6 py-6 shadow-lg md:hidden rounded-b-2xl">
+                <div className="absolute top-16 left-0 w-full bg-[#040F0F]/95 text-white flex flex-col gap-4 px-6 py-6 shadow-lg md:hidden">
                     {NavItems.map((item) => (
                         <Link
                             key={item.name}

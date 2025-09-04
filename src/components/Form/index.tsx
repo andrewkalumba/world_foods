@@ -14,16 +14,17 @@ const Form = () => {
     const handleClick = (e: { preventDefault: () => void }) => {
         e.preventDefault()
 
-        if (!userInput.trim() || !passwordInput.trim()) {
-            setErrorMessage("⚠️ Please fill in both username and password!")
+        if (!userInput || !passwordInput) {
+            setErrorMessage("Please fill in both username and password!")
             setTimeout(() => setErrorMessage(""), 3000)
             return
         }
 
-        const foundUser = userArray.find(user => user.name === userInput && user.password.toString() === passwordInput)
+        const foundUser = userArray.filter(user => user.name === userInput && user.password.toString() === passwordInput)
+        //  const foundUser = userArray.find(user => user.name === userInput && user.password.toString() === passwordInput)
 
         if (foundUser) {
-            setUser(foundUser)
+            setUser(foundUser[0])
         } else {
             setErrorMessage("❌ Invalid username or password!")
             setTimeout(() => setErrorMessage(""), 3000)
@@ -80,8 +81,7 @@ const Form = () => {
                             id="password"
                             value={passwordInput}
                             className="px-4 py-3 rounded-xl border text-amber-950 border-gray-300 focus:ring-2 focus:ring-purple-400 focus:outline-none transition shadow-sm"
-                            required
-                        />
+                            required />
                     </div>
                     <div className="pt-6">
                         <motion.button

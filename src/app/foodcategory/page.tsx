@@ -44,7 +44,7 @@ const FoodListsLanding = () => {
                 animate={{ opacity: 1, rotateY: 0 }}
                 whileHover={{ rotateX: 10, rotateY: -10, scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 150, damping: 12 }}
-                className="text-center text-gray-800 mb-12 text-lg font-bold 
+                className="text-center text-white text-2xl mb-12 font-bold 
     drop-shadow-[5px_5px_8px_rgba(0,0,0,0.3)]"
             >
                 Select a category below to explore delicious meals.
