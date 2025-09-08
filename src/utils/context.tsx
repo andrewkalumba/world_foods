@@ -1,5 +1,5 @@
 "use client"
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { FoodContextType, FoodProp, meal, savedMeal, FavoriteContextType, userType, userContextType } from "@/utils/type"
 
 const foodContext = createContext<FoodContextType | undefined>(undefined)
@@ -76,6 +76,7 @@ const userContext = createContext<userContextType | undefined>(undefined)
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<userType | null>(null)
+
     return (
         <userContext.Provider value={{ user, setUser }}>
             {children}

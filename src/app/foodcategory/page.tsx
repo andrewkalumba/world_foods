@@ -7,7 +7,7 @@ import { Category } from "@/utils/type"
 import { motion } from "framer-motion"
 import { useFoodContext } from "@/utils/context"
 
-const FoodListsLanding = () => {
+const FoodLists = () => {
     const { allFoods, setAllFoods } = useFoodContext()
 
     const API_ENDPOINT = "https://www.themealdb.com/api/json/v1/1/categories.php"
@@ -100,4 +100,4 @@ const FoodListsLanding = () => {
     )
 }
 
-export default FoodListsLanding
+export default FoodLists

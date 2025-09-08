@@ -16,9 +16,7 @@ const EachFoodCategory = ({ params }: { params: Promise<{ category: string }> })
 
   const fetchFilteredFood = async () => {
     try {
-      const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`
-      )
+      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`)
       const data = await response.json()
       setFilteredFood(data)
     } catch (error) {
@@ -28,9 +26,7 @@ const EachFoodCategory = ({ params }: { params: Promise<{ category: string }> })
 
   const SingleFoods = async (idMeal: string) => {
     try {
-      const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`
-      )
+      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`)
       const data = await response.json()
       setFoodInfo(data.meals[0])
     } catch (err) {
@@ -113,10 +109,9 @@ const EachFoodCategory = ({ params }: { params: Promise<{ category: string }> })
               exit={{ scale: 0.8, opacity: 0, y: 50 }}
               transition={{ duration: 0.3 }}
               className="fixed inset-0 z-50 flex items-center justify-center p-6">
+
               <div className="bg-white text-gray-900 rounded-3xl shadow-2xl max-w-3xl w-full p-8 relative overflow-y-auto max-h-[90vh]">
-                <button
-                  onClick={() => setFoodInfo(null)}
-                  className="absolute top-4 right-4 font-bold bg-red-600 hover:bg-red-600 transition px-4 py-2 rounded-lg  text-white shadow animate-pulse">
+                <button onClick={() => setFoodInfo(null)} className="absolute top-4 right-4 font-bold bg-red-600 hover:bg-red-600 transition px-4 py-2 rounded-lg  text-white shadow animate-pulse">
                   Close
                 </button>
 

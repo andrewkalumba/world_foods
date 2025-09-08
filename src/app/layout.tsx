@@ -40,8 +40,8 @@ export default function RootLayout({
               <Header />
               <Protection>
                 {children}
+                <Footer />
               </Protection>
-              <Footer />
               <Toaster />
             </SavedMealProvider>
           </FoodContextProvider>
