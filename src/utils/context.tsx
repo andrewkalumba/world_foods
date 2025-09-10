@@ -22,11 +22,28 @@ export const useFoodContext = () => {
     return context
 }
 
-
 const SavedMealContext = createContext<savedMeal | undefined>(undefined)
 
 export const SavedMealProvider = ({ children }: { children: React.ReactNode }) => {
     const [savedMeal, setSavedMeal] = useState<meal[]>([])
+    const { user } = useUser()
+
+    useEffect(() => {
+        if (user) {
+            const stored = localStorage.getItem(`meals_${user.name}`)
+            if (stored) {
+                setSavedMeal(JSON.parse(stored))
+            } else {
+                setSavedMeal([])
+            }
+        }
+    }, [user])
+
+    useEffect(() => {
+        if (user) {
+            localStorage.setItem(`${user.name}_meals`, JSON.stringify(savedMeal))
+        }
+    }, [savedMeal, user])
 
     const addMeal = (item: meal) => {
         setSavedMeal((prev) => {
