@@ -20,11 +20,11 @@ const Form = () => {
             return
         }
 
-        const foundUser = userArray.filter(user => user.name === userInput && user.password.toString() === passwordInput)
-        //  const foundUser = userArray.find(user => user.name === userInput && user.password.toString() === passwordInput)
+        //const foundUser = userArray.filter(user => user.name === userInput && user.password.toString() === passwordInput)
+        const foundUser = userArray.find(user => user.name === userInput && user.password.toString() === passwordInput)
 
         if (foundUser) {
-            setUser(foundUser[0])
+            setUser(foundUser)
         } else {
             setErrorMessage("❌ Invalid username or password!")
             setTimeout(() => setErrorMessage(""), 3000)
