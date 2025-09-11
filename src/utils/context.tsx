@@ -22,6 +22,46 @@ export const useFoodContext = () => {
     return context
 }
 
+const FavoriteContext = createContext<FavoriteContextType | undefined>(undefined)
+
+export const FavoriteProvider = ({ children }: { children: React.ReactNode }) => {
+    const [favoriteCategory, setFavoriteCategory] = useState<string | null>(null)
+
+    return (
+        <FavoriteContext.Provider value={{ favoriteCategory, setFavoriteCategory }}>
+            {children}
+        </FavoriteContext.Provider>
+    )
+}
+
+export const useFavorite = () => {
+    const context = useContext(FavoriteContext)
+    if (!context) {
+        throw new Error("useFavorite must be used inside FavoriteProvider")
+    }
+    return context
+}
+
+const userContext = createContext<userContextType | undefined>(undefined)
+
+export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+    const [user, setUser] = useState<userType | null>(null)
+
+    return (
+        <userContext.Provider value={{ user, setUser }}>
+            {children}
+        </userContext.Provider>
+    )
+}
+
+export const useUser = () => {
+    const context = useContext(userContext)
+    if (!context) {
+        throw new Error("useUser must be used within a UserProvider")
+    }
+    return context
+}
+
 const SavedMealContext = createContext<savedMeal | undefined>(undefined)
 
 export const SavedMealProvider = ({ children }: { children: React.ReactNode }) => {
@@ -68,43 +108,3 @@ export const useSavedMeals = () => {
     return context
 }
 
-
-const FavoriteContext = createContext<FavoriteContextType | undefined>(undefined)
-
-export const FavoriteProvider = ({ children }: { children: React.ReactNode }) => {
-    const [favoriteCategory, setFavoriteCategory] = useState<string | null>(null)
-
-    return (
-        <FavoriteContext.Provider value={{ favoriteCategory, setFavoriteCategory }}>
-            {children}
-        </FavoriteContext.Provider>
-    )
-}
-
-export const useFavorite = () => {
-    const context = useContext(FavoriteContext)
-    if (!context) {
-        throw new Error("useFavorite must be used inside FavoriteProvider")
-    }
-    return context
-}
-
-const userContext = createContext<userContextType | undefined>(undefined)
-
-export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<userType | null>(null)
-
-    return (
-        <userContext.Provider value={{ user, setUser }}>
-            {children}
-        </userContext.Provider>
-    )
-}
-
-export const useUser = () => {
-    const context = useContext(userContext)
-    if (!context) {
-        throw new Error("useUser must be used within a UserProvider")
-    }
-    return context
-}
