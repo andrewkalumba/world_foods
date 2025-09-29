@@ -11,30 +11,41 @@ const ProfilePage = () => {
     const [foodInfo, setFoodInfo] = useState<meal | null>(null)
 
     return (
-        <div className="min-h-screen p-6 bg-gradient-to-r from-black-400 via-blue-300 to-black-400 text-[#0B132B] flex justify-center">
-            <div className="w-[70%] max-w-6xl bg-white rounded-3xl shadow-xl p-8">
-                <h1 className="text-3xl font-bold mb-6">Your Saved Meals</h1>
+        <div className="min-h-screen p-4 sm:p-6 bg-gradient-to-br from-blue-100 via-white to-blue-200 text-[#0B132B] flex justify-center">
+            <div className="w-full max-w-7xl bg-white rounded-3xl shadow-2xl p-6 sm:p-8">
+                <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center sm:text-left">
+                    Your Saved Meals
+                </h1>
 
                 {savedMeal.length === 0 ? (
-                    <p>You have no saved meals. Go save some delicious meals!</p>
+                    <p className="text-center text-gray-600">You have no saved meals. Go save some delicious meals!</p>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                         {savedMeal.map((meal) => (
-                            <div key={meal.idMeal} className="bg-white rounded-lg shadow p-4 relative cursor-pointer"
-                                onClick={() => setFoodInfo(meal)}>
+                            <div
+                                key={meal.idMeal}
+                                className="bg-white rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 p-4 relative cursor-pointer flex flex-col"
+                                onClick={() => setFoodInfo(meal)}
+                            >
                                 <Image
                                     src={meal.strMealThumb}
                                     alt={meal.strMeal}
-                                    width={200}
-                                    height={150}
-                                    className="rounded"
+                                    width={300}
+                                    height={200}
+                                    className="rounded-lg object-cover w-full h-40"
                                 />
-                                <h2 className="mt-2 font-semibold">{meal.strMeal}</h2>
-                                <p className="text-sm">{meal.strCategory}</p>
+                                <div className="mt-3 flex-1">
+                                    <h2 className="font-semibold text-lg truncate">{meal.strMeal}</h2>
+                                    <p className="text-sm text-gray-500">{meal.strCategory}</p>
+                                </div>
 
                                 <button
-                                    onClick={() => removeMeal(meal.idMeal)}
-                                    className="absolute top-4 right-4 font-bold bg-red-600 hover:bg-red-600 transition px-4 py-2 rounded-lg  text-white shadow">
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        removeMeal(meal.idMeal)
+                                    }}
+                                    className="absolute top-3 right-3 font-semibold bg-red-500 hover:bg-red-600 transition px-3 py-1 rounded-lg text-white shadow text-sm"
+                                >
                                     Remove
                                 </button>
                             </div>
@@ -50,36 +61,27 @@ const ProfilePage = () => {
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
                                 className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
-                                onClick={() => setFoodInfo(null)}
-                            />
+                                onClick={() => setFoodInfo(null)} />
 
                             <motion.div
-                                initial={{ scale: 0.8, opacity: 0, y: 50 }}
+                                initial={{ scale: 0.9, opacity: 0, y: 40 }}
                                 animate={{ scale: 1, opacity: 1, y: 0 }}
-                                exit={{ scale: 0.8, opacity: 0, y: 50 }}
+                                exit={{ scale: 0.9, opacity: 0, y: 40 }}
                                 transition={{ duration: 0.3 }}
-                                className="fixed inset-0 z-50 flex items-center justify-center p-6"
-                            >
-                                <div className="bg-white text-gray-900 rounded-3xl shadow-2xl max-w-3xl w-full p-8 relative overflow-y-auto max-h-[90vh]">
-                                    <button
-                                        onClick={() => setFoodInfo(null)}
-                                        className="absolute top-4 right-4 font-bold bg-red-600 hover:bg-red-600 transition px-4 py-2 rounded-lg  text-white shadow animate-pulse">
+                                className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+                                <div className="bg-white text-gray-900 rounded-3xl shadow-2xl w-full max-w-3xl relative overflow-y-auto max-h-[90vh] p-6 sm:p-8">
+                                    <button onClick={() => setFoodInfo(null)} className="absolute top-4 right-4 font-bold bg-red-500 hover:bg-red-600 transition px-4 py-2 rounded-lg text-white shadow text-sm sm:text-base">
                                         Close
                                     </button>
 
-                                    <h2 className="text-2xl pt-10 font-bold mb-6 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                                    <h2 className="text-xl sm:text-2xl pt-10 font-bold mb-6 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                                         {foodInfo.strMeal}
                                     </h2>
 
-                                    <Image
-                                        src={foodInfo.strMealThumb}
-                                        alt={foodInfo.strMeal}
-                                        width={500}
-                                        height={350}
-                                        className="rounded-2xl mb-6 object-cover mx-auto shadow-lg"
-                                    />
+                                    <Image src={foodInfo.strMealThumb} alt={foodInfo.strMeal} width={600} height={400}
+                                        className="rounded-2xl mb-6 object-cover mx-auto shadow-lg w-full max-h-80" />
 
-                                    <div className="space-y-2 text-gray-700">
+                                    <div className="space-y-2 text-gray-700 text-sm sm:text-base">
                                         <p>
                                             <strong>Category:</strong> {foodInfo.strCategory}
                                         </p>
@@ -88,7 +90,7 @@ const ProfilePage = () => {
                                         </p>
                                     </div>
 
-                                    <p className="mt-6 whitespace-pre-line leading-relaxed text-gray-800">
+                                    <p className="mt-6 whitespace-pre-line leading-relaxed text-gray-800 text-sm sm:text-base">
                                         {foodInfo.strInstructions}
                                     </p>
 
