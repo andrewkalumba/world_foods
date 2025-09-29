@@ -1,9 +1,9 @@
 "use client"
 
-import FoodCategory from "@/components/EachCountryCategory"
+import EachCountryCategory from "@/components/EachCountryCategory"
 
 export default function Home() {
   return (
-    <FoodCategory />
+   <EachCountryCategory/>
   )
 }

@@ -23,7 +23,6 @@ const ProfilePage = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                         {savedMeal.map((meal) => (
                             <div key={meal.idMeal} className="bg-white rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 p-4 relative cursor-pointer flex flex-col" onClick={() => setFoodInfo(meal)}>
-                                
                                 <Image src={meal.strMealThumb} alt={meal.strMeal} width={300} height={200} className="rounded-lg object-cover w-full h-40" />
                                 <div className="mt-3 flex-1">
                                     <h2 className="font-semibold text-lg truncate">{meal.strMeal}</h2>
@@ -55,6 +54,9 @@ const ProfilePage = () => {
                                 transition={{ duration: 0.3 }}
                                 className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
                                 <div className="bg-white text-gray-900 rounded-3xl shadow-2xl w-full max-w-3xl relative overflow-y-auto max-h-[90vh] p-6 sm:p-8">
+                                    <button onClick={() => setFoodInfo(null)} className="absolute top-4 right-4 font-bold bg-red-500 hover:bg-red-600 transition px-4 py-2 rounded-lg text-white shadow text-sm sm:text-base">
+                                        Close
+                                    </button>
 
                                     <h2 className="text-xl sm:text-2xl pt-10 font-bold mb-6 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                                         {foodInfo.strMeal}

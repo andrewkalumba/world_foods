@@ -1,45 +1,53 @@
 "use client"
 
-import Form from "@/components/Form"
-import { useUser } from "@/utils/context"
-import { useEffect, useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
+import { useUser, useSavedMeals } from "@/utils/context"
 import { MealData } from "@/utils/type"
-import AllCountryCategory from "../AllCountryCategory"
-import { useSavedMeals } from "@/utils/context"
 import { FaStar } from "react-icons/fa"
+import AllCountryCategory from "../AllCountryCategory"
+import Form from "../Form"
 
 const EachCountryCategory = () => {
-    const { user } = useUser()
-    const [country, setCountry] = useState("")
+    const { user, setUser, saveCountry } = useUser()
+    const { savedMeal, addMeal, removeMeal } = useSavedMeals()
+
+    const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
     const [meals, setMeals] = useState<MealData[]>([])
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
-    const { savedMeal, addMeal, removeMeal } = useSavedMeals()
+    const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
-    const isSaved = (idMeal: string) => savedMeal.some((m) => m.idMeal === idMeal)
-
-    const toggleFavorite = async (favoriteMeal: MealData) => {
-        if (isSaved(favoriteMeal.idMeal)) {
-            removeMeal(favoriteMeal.idMeal)
-        } else {
-            try {
-                const res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${favoriteMeal.idMeal}`)
-                const data = await res.json()
-                if (data.meals && data.meals[0]) {
-                    addMeal(data.meals[0])
-                }
-            } catch (error) {
-                console.error("Error fetching meal details:", error)
+    useEffect(() => {
+        const storedCountry = localStorage.getItem("favoriteCountry")
+        if (storedCountry && user) {
+            setSelectedCountry(storedCountry)
+            fetchCountryMeals(storedCountry)
+            if (user.favoriteCountry !== storedCountry) {
+                setUser(prev => prev ? { ...prev, favoriteCountry: storedCountry } : prev)
             }
+        } else if (user?.favoriteCountry) {
+            setSelectedCountry(user.favoriteCountry)
+            fetchCountryMeals(user.favoriteCountry)
+        }
+    }, [user, setUser])
+
+    const isSaved = (idMeal: string) => savedMeal.some(m => m.idMeal === idMeal)
+
+    const toggleFavorite = async (meal: MealData) => {
+        if (isSaved(meal.idMeal)) removeMeal(meal.idMeal)
+        else {
+            const res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`)
+            const data = await res.json()
+            if (data.meals && data.meals[0]) addMeal(data.meals[0])
         }
     }
 
-    const fetchCountryMeals = async (searchCountry: string) => {
+    const fetchCountryMeals = async (countryName: string) => {
         try {
             setLoading(true)
-            const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${searchCountry}`)
-            const data = await response.json()
+            const res = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${countryName}`)
+            const data = await res.json()
             if (data.meals) {
                 setMeals(data.meals)
                 setError(null)
@@ -47,99 +55,89 @@ const EachCountryCategory = () => {
                 setMeals([])
                 setError("No meals found for this country.")
             }
-        } catch (error) {
-            console.error("Fetch error:", error)
+        } catch {
             setError("Something went wrong.")
+            setMeals([])
         } finally {
             setLoading(false)
         }
     }
 
-    const handleSearch = async (e: { preventDefault: () => void }) => {
+    const handleSearch = (e: { preventDefault: () => void }) => {
         e.preventDefault()
-        if (!country.trim()) return
+        if (!selectedCountry?.trim()) return
         setError(null)
         setMeals([])
-        fetchCountryMeals(country)
+        fetchCountryMeals(selectedCountry)
     }
 
-    useEffect(() => {
-        if (country.trim() === "") {
-            setMeals([])
-            setError(null)
-        }
-    }, [country])
+    const handleSaveCountry = () => {
+        if (!selectedCountry) return
+        saveCountry(selectedCountry)
+        localStorage.setItem("favoriteCountry", selectedCountry)
+
+        setSuccessMessage(`Favorite country "${selectedCountry}" saved!`)
+        setTimeout(() => setSuccessMessage(null), 5000)
+    }
+
+    const handleBack = () => {
+        setSelectedCountry(null)
+        setMeals([])
+        setError(null)
+    }
+
+    if (!user) return <Form />
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-black-400 via-blue-300 to-black-400 text-[#0B132B]">
-            <div className="p-8 sm:p-20 pb-10">
-                {!user ? (
-                    <div className="flex flex-col items-center gap-8 w-full max-w-md mx-auto bg-white p-8 rounded-2xl shadow-lg">
-                        <h1 className="text-3xl font-bold text-[#0B132B]">Welcome to WorldFoods</h1>
-                        <p className="text-gray-600 text-center">
-                            Please log in to explore our collection of delicious recipes.
-                        </p>
-                        <Form />
-                    </div>
-                ) : (
-                    <div>
-                        <div className="w-full max-w-6xl mx-auto">
-                            <div className="mt-10 text-center">
-                                <p className="text-gray-600 mt-4 text-2xl font-bold">
-                                    Search for meals by country:
-                                </p>
+        <div className="min-h-screen p-8 bg-gradient-to-r from-black-400 via-blue-300 to-black-400 text-[#0B132B]">
+            <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
 
-                                <form
-                                    onSubmit={handleSearch}
-                                    className="mt-6 flex justify-center gap-4">
-                                    <input
-                                        type="text"
-                                        value={country}
-                                        onChange={(e) => setCountry(e.target.value)}
-                                        placeholder="Enter a country (e.g. American, Chinese)"
-                                        className="px-4 py-2 w-64 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none shadow-sm text-amber-950" />
-                                    <button
-                                        type="submit"
-                                        className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg shadow hover:shadow-lg transition">
-                                        Search
-                                    </button>
-                                </form>
+                <form onSubmit={handleSearch} className="flex gap-4 justify-center flex-1 max-w-xl mx-auto">
+                    <input
+                        type="text"
+                        value={selectedCountry || ""}
+                        onChange={e => setSelectedCountry(e.target.value)}
+                        placeholder="Enter a country"
+                        className="px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-400 focus:outline-none flex-1"
+                    />
+                    <button type="submit" className="px-2 py-2 bg-blue-600 text-white rounded-lg cursor-pointer">Search</button>
+                    {selectedCountry && (
+                        <button type="button" onClick={handleSaveCountry} className="px-2 py-2 bg-green-600 text-white rounded-lg cursor-pointer">
+                            Save Country
+                        </button>
+                    )}
+                </form>
 
-                                {loading && <p className="mt-6 text-blue-600">Loading...</p>}
-                                {error && <p className="mt-6 text-red-600">{error}</p>}
-
-                                {meals.length ? (
-                                    <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                                        {meals.map((meal) => (
-                                            <div key={meal.idMeal}
-                                                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition relative">
-                                                <div className="relative w-28 h-28 mx-auto mt-4">
-                                                    <Image
-                                                        src={meal.strMealThumb}
-                                                        alt={meal.strMeal}
-                                                        fill
-                                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                                        className="rounded-full border-4 border-blue-500 shadow-md group-hover:border-blue-300 transition"
-                                                    />
-                                                    <button onClick={() => toggleFavorite(meal)} className="absolute top-2 right-2 text-yellow-400 text-lg bg-black rounded-full p-1">
-                                                        <FaStar className={isSaved(meal.idMeal) ? "fill-yellow-400" : "fill-amber-50"} />
-                                                    </button>
-
-                                                </div>
-                                                <h2 className="p-4 text-lg font-semibold text-gray-800 text-center">
-                                                    {meal.strMeal}
-                                                </h2>
-                                            </div>
-                                        ))}
-                                    </div>
-                                ) :
-                                    !loading && !error && <AllCountryCategory />
-                                }
-                            </div>
-                        </div>
-                    </div>
+                {selectedCountry && (
+                    <button type="button" onClick={handleBack} className="px-4 py-2 bg-gray-500 text-white rounded-lg cursor-pointer mt-2 md:mt-0 md:ml-auto block md:inline-block mx-auto md:mx-0" >
+                        Back to All Countries
+                    </button>
                 )}
             </div>
+
+            {successMessage && <p className="text-gray-900 mb-4 text-center">{successMessage}</p>}
+            {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+            {loading && <p className="text-center">Loading...</p>}
+
+            {meals.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {meals.map(meal => (
+                        <div key={meal.idMeal} className="relative bg-white rounded-lg shadow-md overflow-hidden">
+                            <div className="relative w-full h-60">
+                                <Image src={meal.strMealThumb} alt={meal.strMeal} fill className="object-cover w-full h-full" />
+                                <button
+                                    onClick={() => toggleFavorite(meal)}
+                                    className="absolute top-2 right-2 text-yellow-400 text-lg bg-black rounded-full p-1 cursor-pointer">
+                                    <FaStar className={isSaved(meal.idMeal) ? "fill-yellow-400" : "fill-amber-50"} />
+                                </button>
+                            </div>
+                            <p className="text-center font-semibold mt-2 p-2">{meal.strMeal}</p>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                !loading && <AllCountryCategory />
+            )}
         </div>
     )
 }

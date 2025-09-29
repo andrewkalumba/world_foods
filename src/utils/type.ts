@@ -56,11 +56,18 @@ export type FavoriteContextType = {
 export type userType = {
     name: string
     password: string
+    favoriteCountry?: string
+    favoriteCategory?: string
+    savedMeals: meal[]
 }
 
 export type userContextType = {
     user: userType | null
     setUser: Dispatch<SetStateAction<userType | null>>
+    saveCountry: (country: string) => void
+    clearCountry: () => void
+    saveFavoriteCategory: (category: string) => void
+    clearFavoriteCategory: () => void
 }
 
 export type MealData = {
